@@ -27,10 +27,10 @@
       "persistent": false
 	},
    "manifest_version": 2,
-   "name": "Tool đăng kí học by NguyenLinh-UET",
+   "name": "Edusoft Web Tool by NguyenLinh-UET",
    "browser_action": {
       "default_icon": "img/icon16.png",
-      "default_title": "Tool đăng kí học by NguyenLinh-UET",
+      "default_title": "Edusoft Web Tool by NguyenLinh-UET",
       "default_popup": "html/popup.html"
    },
    "description": "Tool đăng kí học cho HANU,VNUA,PTIT,...",
@@ -40,24 +40,7 @@
       "48": "img/icon48.png",
       "128": "img/icon128.png"
    },   
-   "permissions": [ "storage",
-   					"tabs", 
-   					"*://qldt.ptit.edu.vn/*",
-					"*://daotao.hutech.edu.vn/*",
-					"*://qldt.cs2.ftu.edu.vn/*",
-					"*://sv.bdu.edu.vn/*",
-					"*://daotao.nuce.edu.vn/*",
-					"*://sdh.ou.edu.vn/*",
-					"*://daotao.hvpnvn.edu.vn/*",
-					"*://qldt.hanu.vn/*",
-					"*://daotao.vnua.edu.vn/*",
-					"*://dkmh.epu.edu.vn/*",
-					"*://qldt.ptit.info/*",
-					"*://congthongtin.hvnh.edu.vn/*",
-					"*://tinchitest.ftu.edu.vn/*",
-					"*://daotao.humg.edu.vn/*",
-					"*://ftugate.ftu.edu.vn/*"
-				],
+   "permissions": [ "storage" ],
    "version": "0.1",
    "web_accessible_resources": [ 
 		"js/content.js" 
