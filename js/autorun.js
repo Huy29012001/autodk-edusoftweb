@@ -1,9 +1,13 @@
-var s = document['createElement']('script');
-s['src'] = chrome['extension']['getURL']('js/content.js');
-s['onload'] = function() {
-    this['parentNode']['removeChild'](this)
-};
-(document['head'] || document['documentElement'])['appendChild'](s);
+function inject(filePath){
+    var s = document['createElement']('script');
+    s['src'] = chrome['extension']['getURL'](filePath);
+    s['onload'] = function() {
+        this['parentNode']['removeChild'](this)
+    };
+    (document['head'] || document['documentElement'])['appendChild'](s);
+}
+inject('js/content.js');
+inject('js/toastr.js');
 
 chrome.storage.sync.get('autologin', function (data){
   if(data.autologin)

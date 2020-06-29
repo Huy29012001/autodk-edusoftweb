@@ -1,31 +1,40 @@
 {
    "author": "NguyenLinh-UET",
-   "content_scripts": [ {
-		"js": [ "js/autorun.js" ],
-		"css" : ["css/bootstrap.min.css"],
-		"matches": [
-					"*://qldt.ptit.edu.vn/*",
-					"*://daotao.hutech.edu.vn/*",
-					"*://qldt.cs2.ftu.edu.vn/*",
-					"*://sv.bdu.edu.vn/*",
-					"*://daotao.nuce.edu.vn/*",
-					"*://sdh.ou.edu.vn/*",
-					"*://daotao.hvpnvn.edu.vn/*",
-					"*://qldt.hanu.vn/*",
-					"*://daotao.vnua.edu.vn/*",
-					"*://dkmh.epu.edu.vn/*",
-					"*://qldt.ptit.info/*",
-					"*://congthongtin.hvnh.edu.vn/*",
-					"*://tinchitest.ftu.edu.vn/*",
-					"*://daotao.humg.edu.vn/*",
-					"*://ftugate.ftu.edu.vn/*"
-		],
-        "run_at": "document_idle"
-	}],
+   "content_scripts": [
+      {
+         "js": [
+            "js/autorun.js"
+         ],
+         "css": [
+            "css/bootstrap.min.css",
+            "css/toastr.css"
+         ],
+         "matches": [
+            "*://qldt.ptit.edu.vn/*",
+            "*://daotao.hutech.edu.vn/*",
+            "*://qldt.cs2.ftu.edu.vn/*",
+            "*://sv.bdu.edu.vn/*",
+            "*://daotao.nuce.edu.vn/*",
+            "*://sdh.ou.edu.vn/*",
+            "*://daotao.hvpnvn.edu.vn/*",
+            "*://qldt.hanu.vn/*",
+            "*://daotao.vnua.edu.vn/*",
+            "*://dkmh.epu.edu.vn/*",
+            "*://qldt.ptit.info/*",
+            "*://congthongtin.hvnh.edu.vn/*",
+            "*://tinchitest.ftu.edu.vn/*",
+            "*://daotao.humg.edu.vn/*",
+            "*://ftugate.ftu.edu.vn/*"
+         ],
+         "run_at": "document_idle"
+      }
+   ],
    "background": {
-      "scripts": ["js/background.js"],
+      "scripts": [
+         "js/background.js"
+      ],
       "persistent": false
-	},
+   },
    "manifest_version": 2,
    "name": "Edusoft Web Tool by NguyenLinh-UET",
    "browser_action": {
@@ -39,10 +48,13 @@
       "16": "img/icon16.png",
       "48": "img/icon48.png",
       "128": "img/icon128.png"
-   },   
-   "permissions": [ "storage" ],
-   "version": "0.1",
-   "web_accessible_resources": [ 
-		"js/content.js" 
+   },
+   "permissions": [
+      "storage"
+   ],
+   "version": "0.1.2",
+   "web_accessible_resources": [
+      "js/content.js",
+      "js/toastr.js"
    ]
 }
