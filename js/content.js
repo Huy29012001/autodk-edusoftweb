@@ -2,11 +2,11 @@
 var monhocArr;
 var coursespos = 0;
 
-//Chuyển alert vào console giúp xử lí khi alert hiện lên mà không bấm ok thì code không chạy tiếp 
+//Chuyển alert thành toastr giúp xử lí khi alert hiện lên mà không bấm ok thì code không chạy tiếp 
 window.alert = function (text) {
-    console.log('Trạng thái: ' + text);
+    toastr["info"](text);
     if (text.includes("Server đang tải lại dữ liệu"))
-        setTimeout(function(){location.reload();}, 500);
+        setTimeout(function () { location.reload(); }, 500);
     return true;
 };
 
@@ -15,7 +15,7 @@ window.alert = function (text) {
 //Khi một môn được chọn thì update thông báo
 function toDKSelectedChange_callback2(data) {
     var resArr = data.value.split("|");
-    if (resArr[1] != ""){ // xet song hanh
+    if (resArr[1] != "") { // xet song hanh
         toastr["info"](resArr[1]);
     }
     document.getElementById("divKQ").innerHTML = resArr[0];
@@ -23,8 +23,9 @@ function toDKSelectedChange_callback2(data) {
     document.body.style.cursor = "default";
     isProcessing = false;
     toastr["success"]("Đã chọn môn học thứ " + (coursespos + 1));
-    coursespos++;
-    fastDKOSB(monhocArr[coursespos]);
+
+    coursespos++; // chuyển sang môn tiếp theo
+    fastDKOSB();
 }
 
 //check kết quả đăng kí để reload danh sách đăng kí
@@ -45,17 +46,17 @@ function LuuDanhSachDangKy_HopLe_callback(monHetCho) {
     if (!(arr[0].includes("Ngoài thời gian") || arr[0].includes("Beside allowed time of course registration!") || arr[0].includes("outOfTimeDK"))) {
         toastr["success"]("Đã lưu kết quả! Hãy xem lại danh sách");
         EduSoft.Web.UC.DangKyMonHoc.ShowDSDaDangKy(ShowDSDaDangKy_Callback);
-        if(autoInterval){ // nếu đang ở chế độ găm môn
+        if (autoInterval) { // nếu đang ở chế độ găm môn
             let isDone = true;
-            monhocArr.forEach(monhoc => {
-                let mamonhoc = monhoc.split("|")[1];
-                if(!$("#divKQ")[0].outerHTML.includes(mamonhoc)){ // nếu mã môn học chưa có trong danh sách đã đăng ký
+            for (let i = 0; i < monhocArr; i++) {
+                let mamonhoc = monhocArr[i].split("|")[1];
+                if (!$("#divKQ")[0].outerHTML.includes(mamonhoc)) { // nếu mã môn học chưa có trong danh sách đã đăng ký
                     isDone = false;
                     break;
-                } 
-            });
+                }
+            }
 
-            if(isDone){
+            if (isDone) {
                 toastr["success"]('Đã găm thành công tất cả các môn');
                 clearInterval(autoInterval);
                 autoInterval = 0;
@@ -117,7 +118,7 @@ function toDKSelectedChange_callback(res) {
             var HopLeSTCDuocPhepThayDoi = resArr[33];
             var hopLeNhomMHTuChon = resArr[36];
 
-            var strCanhBaoCTDTKhoi  = resArr[38];
+            var strCanhBaoCTDTKhoi = resArr[38];
 
             if (resArr[0] == 'dhmxhetx') {
                 if (confirm('Môn học học trực tuyến, tiếp tục đăng ký?')) {
@@ -405,14 +406,14 @@ function copyValueThis(object) {
 
 var autoInterval = 0;
 
-function autoGamMon(){
+function autoGamMon() {
     $('#tudongluudk')[0].checked = true;
-    if(autoInterval){
+    if (autoInterval) {
         clearInterval(autoInterval);
         autoInterval = 0;
         $("#autoDK").attr("class", "btn btn-primary btn-sm");
         $("#autoDK").html("Auto ĐK");
-    }else {
+    } else {
         var timeAuto = $("#timeAuto").val() * 1000;
         autoInterval = setInterval(fastDK, timeAuto < 1000 ? 1000 : timeAuto);
         $("#autoDK").attr("class", "btn btn-danger btn-sm");
@@ -423,32 +424,32 @@ function autoGamMon(){
 
 function fastDK() {
     dsmonhoc = $('#subject').val();
-    if(dsmonhoc.trim().length==0){
+    if (dsmonhoc.trim().length == 0) {
         toastr["error"]("Danh sách môn trống");
         return;
     }
     coursespos = 0;
     monhocArr = dsmonhoc.split('\n');
-    fastDKOSB(monhocArr[coursespos]);
+    fastDKOSB();
 }
 
-function fastDKOSB(valueMon) {
-    let mamonhoc = valueMon.split("|")[1];
-    if ($("#divKQ")[0].outerHTML.includes(mamonhoc)) { //kiểm tra đã lưu/chọn được môn chưa.
-        toastr["info"]("Bỏ qua môn thứ " + (coursespos + 1));
-        if (coursespos < monhocArr.length - 1) { // nếu chưa chọn hết môn  
+function fastDKOSB() {
+    if (coursespos < monhocArr.length) { // nếu chưa chọn hết môn
+        let valueMon = monhocArr[coursespos];
+        let mamonhoc = valueMon.split("|")[1];
+        if ($("#divKQ")[0].outerHTML.includes(mamonhoc)) { // nếu môn đã lưu/chọn
+            toastr["info"]("Bỏ qua môn thứ " + (coursespos + 1));
             coursespos++; // chuyển sang môn tiếp theo
-            fastDKOSB(monhocArr[coursespos]);
-        } else { // đã chọn hết môn thì lưu hoặc đưa ra thông báo
-            if ($("#tudongluudk")[0].checked == true)
-                LuuDanhSachDangKy();
-            else
-                toastr["success"]("Đã chọn tất cả các môn! Bấm lưu đăng kí thật nhanh nào!");
+            fastDKOSB();
+        } else { // chưa lưu/chọn thì chọn môn
+            let arr = valueMon.split("|");
+            EduSoft.Web.UC.DangKyMonHoc.DangKySelectedChange(true, arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12], toDKSelectedChange_callback);
         }
-    }
-    else { // chưa lưu/chọn thì chọn môn
-        let arr = valueMon.split("|");
-        EduSoft.Web.UC.DangKyMonHoc.DangKySelectedChange(true, arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12], toDKSelectedChange_callback);    
+    } else { // đã chọn hết môn thì lưu hoặc đưa ra thông báo
+        if ($("#tudongluudk")[0].checked == true)
+            LuuDanhSachDangKy();
+        else
+            toastr["success"]("Đã chọn tất cả các môn! Bấm lưu đăng kí thật nhanh nào!");
     }
 }
 
